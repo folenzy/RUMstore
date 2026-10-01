@@ -9,14 +9,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0a0f;
-    --surface: rgba(255, 255, 255, 0.045);
-    --surface-2: rgba(255, 255, 255, 0.08);
-    --border: rgba(255, 255, 255, 0.08);
-    --text: #f5f5f7;
-    --muted: #8e8e9a;
-    --accent-1: #8b5cf6;
-    --accent-2: #ec4899;
+    --bg: #f6f6f3;
+    --surface: #ffffff;
+    --surface-2: #e8eef6;
+    --border: rgba(30, 75, 127, 0.12);
+    --text: #14304f;
+    --muted: #6a7f95;
+    --accent-1: #1e4b7f;
+    --accent-2: #3b7bbf;
     --accent: linear-gradient(135deg, var(--accent-1), var(--accent-2));
     --ok: #34d399;
     --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -32,8 +32,8 @@
   /* мягкое свечение на фоне */
   body::before {
     content: ''; position: fixed; inset: -20% -30% auto; height: 420px; z-index: -1; pointer-events: none;
-    background: radial-gradient(closest-side, rgba(139, 92, 246, .28), transparent),
-                radial-gradient(closest-side at 80% 40%, rgba(236, 72, 153, .18), transparent);
+    background: radial-gradient(closest-side, rgba(30, 75, 127, .13), transparent),
+                radial-gradient(closest-side at 80% 40%, rgba(91, 155, 213, .16), transparent);
     filter: blur(20px);
   }
   button { font: inherit; color: inherit; border: 0; background: none; padding: 0; cursor: pointer; }
@@ -52,27 +52,30 @@
   .top h2 { font-size: 18px; font-weight: 700; margin: 0; flex: 1; line-height: 1.25; }
 
   .hero { padding: 22px 20px; border-radius: 26px; margin-bottom: 18px; position: relative; overflow: hidden;
-          background: linear-gradient(135deg, rgba(139,92,246,.35), rgba(236,72,153,.25)); border: 1px solid var(--border); }
+          background: linear-gradient(135deg, #1e4b7f, #3d7cc0); color: #fff; box-shadow: 0 16px 36px -18px rgba(30,75,127,.7); }
   .hero::after { content: ''; position: absolute; right: -40px; top: -40px; width: 160px; height: 160px; border-radius: 50%;
                  background: radial-gradient(circle, rgba(255,255,255,.18), transparent 70%); }
   .brand { font-size: 13px; letter-spacing: .18em; text-transform: uppercase; font-weight: 800; opacity: .8; }
   .hero h1 { font-size: 28px; line-height: 1.1; margin: 8px 0 6px; font-weight: 800; letter-spacing: -.02em; }
-  .hero p { margin: 0; color: rgba(255,255,255,.75); font-size: 14px; }
+  .hero p { margin: 0; color: rgba(255,255,255,.82); font-size: 14px; }
 
   /* плитки разделов */
   .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .tile { text-align: left; padding: 16px; border-radius: var(--r); background: var(--surface); border: 1px solid var(--border);
           display: flex; flex-direction: column; gap: 10px; min-height: 132px; position: relative; overflow: hidden; }
   .tile.wide { grid-column: span 2; min-height: 0; flex-direction: row; align-items: center;
-               background: linear-gradient(135deg, rgba(139,92,246,.22), rgba(236,72,153,.12)); }
+               background: linear-gradient(135deg, rgba(30,75,127,.10), rgba(91,155,213,.07)); }
   .ico { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; font-size: 24px; flex: none;
-         background: linear-gradient(135deg, rgba(139,92,246,.35), rgba(236,72,153,.25)); box-shadow: inset 0 0 0 1px rgba(255,255,255,.12); }
+         background: linear-gradient(135deg, rgba(30,75,127,.12), rgba(91,155,213,.2)); box-shadow: inset 0 0 0 1px rgba(30,75,127,.1); }
   .tile b { font-size: 15px; font-weight: 700; line-height: 1.25; }
   .tile small { color: var(--muted); font-size: 12px; font-weight: 600; margin-top: auto; }
   .tile.wide small { margin-top: 2px; display: block; }
   .tile.dim { opacity: .65; }
   .badge { position: absolute; top: 12px; right: 12px; font-size: 10px; font-weight: 800; letter-spacing: .06em;
            text-transform: uppercase; padding: 4px 8px; border-radius: 99px; background: var(--surface-2); color: var(--muted); }
+
+  .tile, .row, .card, .citem, .sum, .panel, .feat, .specs { box-shadow: 0 1px 2px rgba(20,48,79,.05), 0 6px 18px -12px rgba(20,48,79,.18); }
+  .card .add.go, .step.go { color: #fff; }
 
   /* списки */
   .lead { color: var(--muted); font-size: 14px; line-height: 1.5; margin: -6px 0 16px; white-space: pre-line; }
@@ -90,16 +93,16 @@
   .card { border-radius: var(--r); background: var(--surface); border: 1px solid var(--border); padding: 8px;
           display: flex; flex-direction: column; text-align: left; }
   .ph { aspect-ratio: 1; border-radius: 14px; overflow: hidden; display: grid; place-items: center; font-size: 34px;
-        background: linear-gradient(160deg, rgba(255,255,255,.07), rgba(255,255,255,.02)); margin-bottom: 10px; }
+        background: linear-gradient(160deg, #eaf0f8, #f8fafc); margin-bottom: 10px; }
   .ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .card .cp { font-weight: 800; font-size: 17px; padding: 0 4px; }
-  .card .ct { font-size: 13px; line-height: 1.3; color: rgba(255,255,255,.8); margin: 4px 4px 10px; flex: 1; }
+  .card .ct { font-size: 13px; line-height: 1.3; color: #2c4a6b; margin: 4px 4px 10px; flex: 1; }
   .card .add { border-radius: 12px; padding: 10px; font-size: 14px; font-weight: 700; background: var(--surface-2); }
   .card .add.go { background: var(--accent); }
 
   /* карточка товара */
   .hero-ph { aspect-ratio: 1; border-radius: 26px; margin-bottom: 18px; overflow: hidden; display: grid; place-items: center;
-             font-size: 64px; background: linear-gradient(160deg, rgba(139,92,246,.2), rgba(236,72,153,.08)); border: 1px solid var(--border); }
+             font-size: 64px; background: linear-gradient(160deg, #e3ecf7, #f7f9fc); border: 1px solid var(--border); }
   .hero-ph img { width: 100%; height: 100%; object-fit: cover; }
   .ttl { font-size: 24px; font-weight: 800; letter-spacing: -.02em; margin: 0 0 6px; line-height: 1.15; }
   .big { font-size: 30px; font-weight: 800; letter-spacing: -.02em; margin: 10px 0 4px;
@@ -110,7 +113,7 @@
   .chip { padding: 11px 16px; border-radius: 14px; background: var(--surface); border: 1px solid var(--border);
           font-weight: 600; font-size: 14px; transition: background-color 160ms ease, border-color 160ms ease, transform 160ms var(--ease-out); }
   .chip span { color: var(--muted); font-weight: 600; margin-left: 6px; }
-  .chip.on { background: rgba(139,92,246,.22); border-color: var(--accent-1); }
+  .chip.on { background: rgba(30,75,127,.1); border-color: var(--accent-1); }
   .chip.on span { color: var(--text); }
 
   /* калькулятор тиража */
@@ -124,11 +127,11 @@
           transition: background-color 200ms ease, border-color 200ms ease; }
   .tier small { display: block; color: var(--muted); font-size: 11px; font-weight: 700; }
   .tier b { font-size: 15px; }
-  .tier.on { background: rgba(139,92,246,.22); border-color: var(--accent-1); }
+  .tier.on { background: rgba(30,75,127,.1); border-color: var(--accent-1); }
   .sum { margin-top: 16px; padding: 16px; border-radius: var(--r); background: var(--surface); border: 1px solid var(--border); }
   .sum .l { display: flex; justify-content: space-between; color: var(--muted); font-size: 14px; margin-bottom: 6px; }
   .sum .l b { color: var(--text); }
-  .warn { color: #fbbf24; font-size: 13px; margin-top: 8px; }
+  .warn { color: #b45309; font-size: 13px; margin-top: 8px; }
 
   /* текстовые экраны */
   .panel { padding: 20px; border-radius: 24px; background: var(--surface); border: 1px solid var(--border);
@@ -138,7 +141,7 @@
   @keyframes float { 50% { transform: translateY(-6px); } }
 
   .pill { display: inline-block; font-size: 12px; font-weight: 800; padding: 6px 12px; border-radius: 99px; margin-bottom: 10px;
-          background: rgba(139,92,246,.2); border: 1px solid rgba(139,92,246,.5); color: #ddd6fe; }
+          background: rgba(30,75,127,.08); border: 1px solid rgba(30,75,127,.3); color: #1e4b7f; }
   .feats { display: grid; gap: 10px; }
   .feat { display: flex; gap: 14px; align-items: flex-start; padding: 14px; border-radius: var(--r); background: var(--surface); border: 1px solid var(--border); }
   .feat .ico { width: 42px; height: 42px; font-size: 20px; border-radius: 12px; }
@@ -148,6 +151,9 @@
   .specs div { display: flex; justify-content: space-between; gap: 12px; padding: 12px 16px; font-size: 14px; }
   .specs div + div { border-top: 1px solid var(--border); }
   .specs span { color: var(--muted); }
+  .specs.list div { justify-content: flex-start; padding: 10px 16px; }
+  .specs.list span { min-width: 22px; }
+  .specs.list b { text-align: left; font-weight: 600; }
   .specs b { font-weight: 600; text-align: right; }
 
   /* корзина */
@@ -166,7 +172,7 @@
   .note { color: var(--muted); font-size: 13px; margin: 0 4px 16px; }
   .empty { text-align: center; padding: 60px 20px; color: var(--muted); }
   .empty .e { font-size: 56px; margin-bottom: 10px; }
-  .link { color: #c4b5fd; font-weight: 700; margin-top: 14px; display: inline-block; }
+  .link { color: #1e4b7f; font-weight: 700; margin-top: 14px; display: inline-block; }
 
   /* нижняя панель */
   .dock { position: fixed; left: 0; right: 0; bottom: 0; padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
@@ -175,7 +181,7 @@
   .dock.hide { transform: translateY(110%); opacity: 0; pointer-events: none; }
   .cta { width: 100%; height: 56px; border-radius: 18px; background: var(--accent); font-weight: 800; font-size: 16px;
          display: flex; align-items: center; justify-content: center; gap: 10px;
-         box-shadow: 0 10px 30px -10px rgba(236, 72, 153, .6); }
+         box-shadow: 0 10px 26px -10px rgba(30, 75, 127, .6); color: #fff; }
   .cta:disabled { background: var(--surface-2); box-shadow: none; color: var(--muted); }
   .cta .cnt { background: rgba(255,255,255,.22); border-radius: 99px; padding: 2px 9px; font-size: 13px; }
   .cta .sp { flex: 1; text-align: left; }
@@ -186,7 +192,7 @@
 
   .toast { position: fixed; left: 50%; top: calc(12px + env(safe-area-inset-top)); z-index: 20;
            padding: 10px 16px; border-radius: 14px; font-size: 14px; font-weight: 700;
-           background: rgba(30, 30, 40, .9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border);
+           background: rgba(20, 48, 79, .94); color: #fff; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border);
            transform: translate(-50%, -150%); opacity: 0; transition: transform 260ms var(--ease-out), opacity 200ms ease; }
   .toast.show { transform: translate(-50%, 0); opacity: 1; }
 
@@ -221,11 +227,11 @@ const TIERS = [[41, 200], [201, 500], [501, 1000]];
 const CATALOG = [
   { id: 'help', icon: '🎓', title: 'Помощь с любым предметом', wide: true, direct: true,
     request: 'Помощь с предметом / экзамен',
-    text: 'Поможем с любым предметом — разберёмся с любой учебной задачей.\n\n' +
+    text: 'Поможем справиться с учебными задачами по любой дисциплине.\n\n' +
           'Как это работает:\n' +
           '1️⃣  Добавьте заявку в корзину и оформите заказ.\n' +
-          '2️⃣  Менеджер увидит вашу заявку и сам напишет вам в личные сообщения.\n' +
-          '3️⃣  Все детали обсудим лично 🤝' },
+          '2️⃣  Менеджер обработает заявку и свяжется с вами в личных сообщениях.\n' +
+          '3️⃣  Обсудим все детали и приступим к работе 🤝' },
 
   { id: 'robe', icon: '🥼', title: 'Фирменные халаты', tag: 'RUM store', soon: true,
     text: 'Скоро здесь появятся фирменные халаты RUM store ✨\n\nСледите за обновлениями!',
@@ -269,7 +275,7 @@ const CATALOG = [
     ] },
 
   { id: 'tools', icon: '🔧', title: 'Стом. инструменты / Наборы', tag: '22 позиции', subs: [
-    { icon: '🔧', title: 'Инструменты', grid: true, items: [
+    { icon: '🔧', title: 'Инструменты', grid: true, count: '22 позиции', items: [
       // photo: 'имя-файла.jpg' — загрузите фото в репозиторий и впишите имя файла
       { title: 'К-файл (размер 15–40)', photo: 'k-file.jpg', price: '250 ₽', desc: 'В комплекте все размеры от 15 до 40.' },
       { title: 'H-файл (размер 15–40)', photo: 'h-file.jpg', price: '250 ₽', desc: 'В комплекте все размеры от 15 до 40.' },
@@ -294,19 +300,50 @@ const CATALOG = [
       { title: 'Нож моделировочный', photo: 'knife-modeling.jpg', price: '650 ₽' },
       { title: 'Чашка силиконовая для гипса', photo: 'cup-silicone.jpg', price: '470 ₽' },
     ] },
-    { icon: '🧰', title: 'Наборы', soon: true, text: 'Наборы в процессе — скоро здесь появятся готовые комплекты ✨' },
+    { icon: '🧰', title: 'Наборы', sid: 'sets', grid: true, count: '4 набора',
+      text: 'Готовые комплекты инструментов по курсам. Групповая цена — при заказе от 10 наборов.',
+      items: [
+        { title: 'Набор 1 курс (ТЕРАПИЯ)', photo: 'set-1-therapy.jpg', price: 'от 5 370 ₽',
+          variantsLabel: 'Покупка', variants: [
+            { name: 'Розница', price: '6 850 ₽' },
+            { name: 'Для группы (от 10 шт.)', price: '5 370 ₽' },
+          ],
+          contents: ['Фантом Китай', 'Фантом Турция', 'Наконечник турбо со светом', 'Наконечник турбо без света',
+                     'Наконечник механический', 'Боры (комплект)', 'Блок для препарирования'] },
+        { title: 'Набор 2 курс (ОЗПТ)', photo: 'set-2-ozpt.jpg', price: 'от 4 100 ₽',
+          variantsLabel: 'Покупка', variants: [
+            { name: 'Розница', price: '4 670 ₽' },
+            { name: 'Для группы (от 10 шт.)', price: '4 100 ₽' },
+          ],
+          contents: ['Окклюдатор', 'Зубы акриловые', 'Воск моделировочный', 'Крампонные щипцы', 'Фрезы (комплект)',
+                     'Нож для гипса', 'Нож для воска', 'Нож моделировочный', 'Чашка силиконовая для гипса'] },
+        { title: 'Набор 2 курс (ЭНДО)', photo: 'set-2-endo.jpg', price: 'от 3 200 ₽',
+          variantsLabel: 'Покупка', variants: [
+            { name: 'Розница', price: '3 590 ₽' },
+            { name: 'Для группы (от 10 шт.)', price: '3 200 ₽' },
+          ],
+          contents: ['К-файл (размер 15–40)', 'H-файл (размер 15–40)', 'Ример (размер 15–40)', 'Гуттаперча (размер 0.4)',
+                     'Штифты бумажные (размер 0.4)', 'Эндо-блоки (резец, премоляр, моляр)'] },
+        { title: 'Набор ЭНДО', photo: 'set-endo.jpg', price: 'от 3 200 ₽',
+          desc: 'Состав уточняйте у менеджера.',   // TODO: впишите состав: contents: ['...', '...']
+          variantsLabel: 'Покупка', variants: [
+            { name: 'Розница', price: '3 590 ₽' },
+            { name: 'Для группы (от 10 шт.)', price: '3 200 ₽' },
+          ] },
+      ] },
   ] },
 
-  { id: 'works', icon: '💻', title: 'Тесты, курсовые, итоговые', tag: 'от 200 ₽',
-    text: 'Сделаем любую учебную работу — от одного теста до итоговой.',
+  { id: 'works', icon: '💻', title: 'Тесты, курсовые, итоговые, презентации', tag: 'от 200 ₽',
+    text: 'Сделаем любую учебную работу — от одного теста до итоговой и презентации.',
     items: [
-      { title: 'Тест', desc: 'Цена зависит от объёма и сложности.', price: 'от 200 ₽' },
+      { title: 'Тест на портале', desc: 'Цена зависит от объёма и сложности.', price: 'от 200 ₽' },
       { title: 'Курсовая работа', variantsLabel: 'Срок', variants: [
         { name: 'Обычная', price: '10 000 ₽' },
         { name: 'Срочная', price: '15 000 ₽' },
       ] },
       { title: 'Итоговая работа по информатике (1 курс)', price: '2 000 ₽' },
-      { title: 'Другое', desc: 'Любая электронная работа или помощь, которой нет в списке. Добавьте заявку в корзину — менеджер напишет вам и всё уточнит.' },
+      { title: 'Презентация по матведу', price: '1 300 ₽' },
+      { title: 'Другое', desc: 'Любая электронная работа, презентация или помощь, которой нет в списке. Добавьте заявку в корзину — менеджер напишет вам и всё уточнит.' },
     ] },
 
   { id: 'packs', icon: '📦', title: 'Пакеты услуг', tag: 'Выгодно', soon: true,
@@ -319,7 +356,7 @@ const tg = window.Telegram?.WebApp;
 const inTg = !!(tg && tg.platform && tg.platform !== 'unknown');
 if (tg) {
   tg.ready(); tg.expand();
-  try { tg.setHeaderColor('#0a0a0f'); tg.setBackgroundColor('#0a0a0f'); } catch (e) {}
+  try { tg.setHeaderColor('#f6f6f3'); tg.setBackgroundColor('#f6f6f3'); } catch (e) {}
 }
 
 const app = document.getElementById('app');
@@ -422,7 +459,7 @@ function render(keepAnim) {
     html = header(`${box.icon} ${box.title}`) + `<div class="list">` +
       box.subs.map((x, k) => `<button class="row press st" style="--i:${k}" data-sub="${k}">
           <div class="ico">${x.icon}</div>
-          <div class="t"><b>${esc(x.title)}</b><small>${x.soon ? 'Скоро' : x.items.length + ' позиций'}</small></div>
+          <div class="t"><b>${esc(x.title)}</b><small>${x.soon ? 'Скоро' : (x.count || x.items.length + ' позиций')}</small></div>
           <span class="chev">›</span></button>`).join('') + `</div>`;
 
   } else if (state.view === 'section') {
@@ -459,11 +496,12 @@ function render(keepAnim) {
        <h1 class="ttl st" style="--i:1">${esc(it.title)}</h1>
        ${price ? `<div class="big st" style="--i:2">${esc(price)}</div>` : `<p class="desc st" style="--i:2">Цена уточняется у менеджера</p>`}
        ${it.desc ? `<p class="desc st" style="--i:3">${esc(it.desc)}</p>` : ''}
+       ${it.contents ? `<div class="label st" style="--i:3">В наборе</div><div class="specs list st" style="--i:4">${it.contents.map((c, k) => `<div><span>${k + 1}</span><b>${esc(c)}</b></div>`).join('')}</div>` : ''}
        ${it.variants ? `<div class="label st" style="--i:3">${esc(it.variantsLabel || 'Вариант')}</div><div class="chips st" style="--i:4">` +
          it.variants.map((x, j) => `<button class="chip press ${state.v === j ? 'on' : ''}" data-v="${j}">${esc(vName(x))}${typeof x === 'object' && x.price ? `<span>${esc(x.price)}</span>` : ''}</button>`).join('') + `</div>` : ''}`;
     dockSet = true;
     setDock(`<button class="cta press" ${need ? 'disabled' : ''}>${need ? 'Выберите ' + esc((it.variantsLabel || 'вариант').toLowerCase()) : 'В корзину' + (price ? ' · ' + esc(price) : '')}</button>`,
-      () => { if (!need) addToCart({ sec: sec.id, item: it.title, price, variant: v ? `${it.variantsLabel || 'Вариант'}: ${vName(v)}` : '' }); });
+      () => { if (!need) addToCart({ sec: box.sid || sec.id, item: it.title, price, variant: v ? `${it.variantsLabel || 'Вариант'}: ${vName(v)}` : '' }); });
 
   } else if (state.view === 'cart') {
     html = cartView(); dockSet = true;
@@ -544,7 +582,7 @@ function bind(sec, box) {
   on('[data-add]', b => {
     const i = +b.dataset.add, it = box.items[i];
     if (it.variants) return go({ view: 'item', sec: sec.id, sub: state.sub, i, v: null });
-    addToCart({ sec: sec.id, item: it.title, price: it.price || '', variant: '' });
+    addToCart({ sec: box.sid || sec.id, item: it.title, price: it.price || '', variant: '' });
   });
   on('[data-v]', b => { haptic('light'); go({ ...state, v: +b.dataset.v }, true); });
   on('[data-n]', b => {
