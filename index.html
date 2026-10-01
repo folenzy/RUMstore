@@ -232,7 +232,7 @@ const CATALOG = [
     product: {
       name: 'Медицинский халат RUM store',
       lead: 'Прямой фасон и воротник-стойка — аккуратный и профессиональный образ без лишних усилий.',
-      photo: '',   // фото халата: 'halat.jpg'
+      photo: 'halat.jpg',   // фото халата: 'halat.jpg'
       features: [
         ['🎀', 'Регулируемая талия', 'Контрастная кулиска со стопперами по бокам — легко меняйте силуэт и объём.'],
         ['👜', 'Три кармана', 'Один на груди и два по бокам — всё нужное всегда под рукой.'],
@@ -263,41 +263,41 @@ const CATALOG = [
   { id: 'cover', icon: '📘', title: 'Обложки', tag: 'Студенческий · зачётка',
     text: 'Обложки на студенческий билет и зачётную книжку — по отдельности или комплектом.\nЦена за штуку зависит от материала и тиража.',
     items: [
-      { title: 'Комплект: студенческий + зачётка', photo: '', tiered: { 'Натуральная кожа': [3024, 2824, 2625], 'Экокожа': [2644, 2482, 3192] } },
-      { title: 'Обложка на студенческий билет',   photo: '', tiered: { 'Натуральная кожа': [1570, 1460, 1350], 'Экокожа': [1370, 1300, 1200] } },
-      { title: 'Обложка на зачётную книжку',      photo: '', tiered: { 'Натуральная кожа': [1850, 1750, 1650], 'Экокожа': [1650, 1550, 1450] } },
+      { title: 'Комплект: студенческий + зачётка', photo: 'cover-set.jpg', tiered: { 'Натуральная кожа': [3024, 2824, 2625], 'Экокожа': [2644, 2482, 3192] } },
+      { title: 'Обложка на студенческий билет',   photo: 'cover-student.jpg', tiered: { 'Натуральная кожа': [1570, 1460, 1350], 'Экокожа': [1370, 1300, 1200] } },
+      { title: 'Обложка на зачётную книжку',      photo: 'cover-zachetka.jpg', tiered: { 'Натуральная кожа': [1850, 1750, 1650], 'Экокожа': [1650, 1550, 1450] } },
     ] },
 
   { id: 'tools', icon: '🔧', title: 'Стом. инструменты / Наборы', tag: '22 позиции', subs: [
     { icon: '🔧', title: 'Инструменты', grid: true, items: [
       // photo: 'имя-файла.jpg' — загрузите фото в репозиторий и впишите имя файла
-      { title: 'К-файл', photo: '', price: '250 ₽', variantsLabel: 'Размер', variants: ['15', '20', '25', '30', '35', '40'] },
-      { title: 'H-файл', photo: '', price: '250 ₽', variantsLabel: 'Размер', variants: ['15', '20', '25', '30', '35', '40'] },
-      { title: 'Ример',  photo: '', price: '250 ₽', variantsLabel: 'Размер', variants: ['15', '20', '25', '30', '35', '40'] },
-      { title: 'Гуттаперча (размер 0.4)', photo: '', price: '370 ₽' },
-      { title: 'Штифты бумажные (размер 0.4)', photo: '', price: '370 ₽' },
-      { title: 'Эндо-блоки', photo: '', price: 'от 290 ₽', variantsLabel: 'Вариант', variants: [
+      { title: 'К-файл', photo: 'k-file.jpg', price: '250 ₽', variantsLabel: 'Размер', variants: ['15', '20', '25', '30', '35', '40'] },
+      { title: 'H-файл', photo: 'h-file.jpg', price: '250 ₽', variantsLabel: 'Размер', variants: ['15', '20', '25', '30', '35', '40'] },
+      { title: 'Ример',  photo: 'reamer.jpg', price: '250 ₽', variantsLabel: 'Размер', variants: ['15', '20', '25', '30', '35', '40'] },
+      { title: 'Гуттаперча (размер 0.4)', photo: 'guttapercha.jpg', price: '370 ₽' },
+      { title: 'Штифты бумажные (размер 0.4)', photo: 'paper-points.jpg', price: '370 ₽' },
+      { title: 'Эндо-блоки', photo: 'endo-blocks.jpg', price: 'от 290 ₽', variantsLabel: 'Вариант', variants: [
         { name: 'Резец (1 шт)', price: '290 ₽' },
         { name: 'Премоляр (1 шт)', price: '290 ₽' },
         { name: 'Моляр (1 шт)', price: '290 ₽' },
         { name: 'Комплект: резец + премоляр + моляр', price: '750 ₽' },
       ] },
-      { title: 'Фантом Китай', photo: '', price: '2 450 ₽' },
-      { title: 'Фантом Турция', photo: '', price: '4 370 ₽' },
-      { title: 'Наконечник турбо без света', photo: '', price: '2 990 ₽' },
-      { title: 'Наконечник турбо со светом', photo: '', price: '3 870 ₽' },
-      { title: 'Наконечник механический', photo: '', price: '2 870 ₽' },
-      { title: 'Боры (комплект)', photo: '', price: '780 ₽' },
-      { title: 'Блок для препарирования', photo: '', price: '980 ₽' },
-      { title: 'Окклюдатор', photo: '', price: '970 ₽' },
-      { title: 'Зубы акриловые', photo: '', price: '1 150 ₽' },
-      { title: 'Воск моделировочный', photo: '', price: '480 ₽' },
-      { title: 'Крампонные щипцы', photo: '', price: '1 170 ₽' },
-      { title: 'Фрезы (комплект)', photo: '', price: '770 ₽' },
-      { title: 'Нож для гипса', photo: '', price: '690 ₽' },
-      { title: 'Нож для воска', photo: '', price: '790 ₽' },
-      { title: 'Нож моделировочный', photo: '', price: '650 ₽' },
-      { title: 'Чашка силиконовая для гипса', photo: '', price: '470 ₽' },
+      { title: 'Фантом Китай', photo: 'fantom-china.jpg', price: '2 450 ₽' },
+      { title: 'Фантом Турция', photo: 'fantom-turkey.jpg', price: '4 370 ₽' },
+      { title: 'Наконечник турбо без света', photo: 'turbo-nolight.jpg', price: '2 990 ₽' },
+      { title: 'Наконечник турбо со светом', photo: 'turbo-light.jpg', price: '3 870 ₽' },
+      { title: 'Наконечник механический', photo: 'handpiece-mech.jpg', price: '2 870 ₽' },
+      { title: 'Боры (комплект)', photo: 'burs-set.jpg', price: '780 ₽' },
+      { title: 'Блок для препарирования', photo: 'prep-block.jpg', price: '980 ₽' },
+      { title: 'Окклюдатор', photo: 'occludator.jpg', price: '970 ₽' },
+      { title: 'Зубы акриловые', photo: 'acrylic-teeth.jpg', price: '1 150 ₽' },
+      { title: 'Воск моделировочный', photo: 'wax-modeling.jpg', price: '480 ₽' },
+      { title: 'Крампонные щипцы', photo: 'crampon-pliers.jpg', price: '1 170 ₽' },
+      { title: 'Фрезы (комплект)', photo: 'milling-set.jpg', price: '770 ₽' },
+      { title: 'Нож для гипса', photo: 'knife-gypsum.jpg', price: '690 ₽' },
+      { title: 'Нож для воска', photo: 'knife-wax.jpg', price: '790 ₽' },
+      { title: 'Нож моделировочный', photo: 'knife-modeling.jpg', price: '650 ₽' },
+      { title: 'Чашка силиконовая для гипса', photo: 'cup-silicone.jpg', price: '470 ₽' },
     ] },
     { icon: '🧰', title: 'Наборы', soon: true, text: 'Наборы в процессе — скоро здесь появятся готовые комплекты ✨' },
   ] },
@@ -350,6 +350,7 @@ function cartTotal() {
   return { sum, unknown };
 }
 
+function imgFail(img) { img.replaceWith(document.createTextNode(img.dataset.f || '📷')); }
 function go(s, keepScroll) { state = s; render(); if (!keepScroll) window.scrollTo(0, 0); }
 
 function toast(t) {
@@ -437,7 +438,7 @@ function render(keepAnim) {
     if (box.grid) {
       html += `<div class="grid">` + box.items.map((it, i) => `<div class="card st" style="--i:${Math.min(i, 10)}">
           <button class="press" data-i="${i}" style="text-align:left">
-            <div class="ph">${it.photo ? `<img src="${esc(it.photo)}" alt="" loading="lazy">` : '🦷'}</div>
+            <div class="ph">${it.photo ? `<img src="${esc(it.photo)}" alt="" loading="lazy" data-f="🦷" onerror="imgFail(this)">` : '🦷'}</div>
             <div class="cp">${esc(it.price || 'Цена по запросу')}</div>
             <div class="ct">${esc(it.title)}</div>
           </button>
@@ -462,7 +463,7 @@ function render(keepAnim) {
     const price = (v && typeof v === 'object' && v.price) || it.price || '';
     const need = it.variants && state.v == null;
     html = header('') +
-      `<div class="hero-ph st">${it.photo ? `<img src="${esc(it.photo)}" alt="">` : (box.grid ? '🦷' : sec.icon)}</div>
+      `<div class="hero-ph st">${it.photo ? `<img src="${esc(it.photo)}" alt="" data-f="${box.grid ? '🦷' : sec.icon}" onerror="imgFail(this)">` : (box.grid ? '🦷' : sec.icon)}</div>
        <h1 class="ttl st" style="--i:1">${esc(it.title)}</h1>
        ${price ? `<div class="big st" style="--i:2">${esc(price)}</div>` : `<p class="desc st" style="--i:2">Цена уточняется у менеджера</p>`}
        ${it.desc ? `<p class="desc st" style="--i:3">${esc(it.desc)}</p>` : ''}
@@ -484,7 +485,7 @@ function render(keepAnim) {
 
 function productView(box) {
   const p = box.product;
-  return `<div class="hero-ph st">${p.photo ? `<img src="${esc(p.photo)}" alt="">` : box.icon}</div>
+  return `<div class="hero-ph st">${p.photo ? `<img src="${esc(p.photo)}" alt="" data-f="${box.icon}" onerror="imgFail(this)">` : box.icon}</div>
     <span class="pill st" style="--i:1">✨ Скоро в продаже</span>
     <h1 class="ttl st" style="--i:1">${esc(p.name)}</h1>
     <p class="desc st" style="--i:2">${esc(p.lead)}</p>
@@ -501,7 +502,7 @@ function tieredView(sec, it) {
   const t = tierOf(n);
   const unit = t >= 0 ? it.tiered[mats[m]][t] : null;
   const html = header('') +
-    `<div class="hero-ph st">${it.photo ? `<img src="${esc(it.photo)}" alt="">` : '📘'}</div>
+    `<div class="hero-ph st">${it.photo ? `<img src="${esc(it.photo)}" alt="" data-f="📘" onerror="imgFail(this)">` : '📘'}</div>
      <h1 class="ttl st" style="--i:1">${esc(it.title)}</h1>
      <p class="desc st" style="--i:2">Чем больше тираж — тем ниже цена за штуку.</p>
      <div class="label">Материал</div>
