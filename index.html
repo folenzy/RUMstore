@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>RUM store</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  :root {
+    --bg: var(--tg-theme-bg-color, #fff);
+    --text: var(--tg-theme-text-color, #111);
+    --hint: var(--tg-theme-hint-color, #888);
+    --card: var(--tg-theme-secondary-bg-color, #f2f2f5);
+    --btn: var(--tg-theme-button-color, #2481cc);
+    --btn-text: var(--tg-theme-button-text-color, #fff);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 16px 16px 90px; font-family: -apple-system, system-ui, sans-serif;
+         background: var(--bg); color: var(--text); }
+  h1 { font-size: 20px; margin: 0 0 12px; }
+  .hint { color: var(--hint); font-size: 14px; margin: 0 0 12px; }
+  .list { display: grid; gap: 8px; }
+  .item { background: var(--card); border: 0; border-radius: 12px; padding: 14px;
+          text-align: left; font-size: 16px; color: var(--text); width: 100%; cursor: pointer; }
+  .item small { display: block; color: var(--hint); margin-top: 4px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 16px; }
+  .chip { border: 2px solid var(--card); background: var(--card); color: var(--text);
+          border-radius: 10px; padding: 10px 14px; font-size: 15px; cursor: pointer; }
+  .chip.on { border-color: var(--btn); }
+  .price { font-size: 22px; font-weight: 700; margin: 12px 0; }
+  img { width: 100%; border-radius: 12px; margin-bottom: 12px; }
+  .back { background: none; border: 0; color: var(--btn); font-size: 15px; padding: 0 0 12px; cursor: pointer; }
+  .main { width: 100%; border: 0; border-radius: 12px; padding: 14px; font-size: 16px;
+          background: var(--btn); color: var(--btn-text); cursor: pointer; margin-top: 8px; }
+  .main:disabled { opacity: .4; }
+  .ghost { width: 100%; border: 0; border-radius: 12px; padding: 12px; font-size: 15px;
+           background: var(--card); color: var(--text); cursor: pointer; margin-top: 8px; }
+  .row { display: flex; align-items: center; gap: 10px; background: var(--card);
+         border-radius: 12px; padding: 12px; }
+  .row .info { flex: 1; min-width: 0; }
+  .row .info small { display: block; color: var(--hint); }
+  .qty { display: flex; align-items: center; gap: 8px; }
+  .qty button { width: 32px; height: 32px; border-radius: 8px; border: 0; font-size: 18px;
+                background: var(--bg); color: var(--text); cursor: pointer; }
+  .total { font-size: 18px; font-weight: 700; margin: 16px 0 4px; }
+  .cartbar { position: fixed; left: 16px; right: 16px; bottom: 16px; }
+  .toast { position: fixed; left: 50%; top: 16px; transform: translateX(-50%); background: #000c;
+           color: #fff; padding: 10px 16px; border-radius: 10px; font-size: 14px; display: none; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="cartbar" id="cartbar"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ============ КАТАЛОГ (редактировать здесь) ============
+// Цена — строка. Если цена вида «2 500 ₽», она учитывается в «Итого».
+// Цены вида «от 300 ₽» показываются, но в «Итого» не суммируются.
+// У вариантов может быть своя цена: { name: 'Аренда', price: '500 ₽' }.
+const CATALOG = [
+  { id: 'help', title: '📚 Помощь с любым предметом', direct: true,
+    text: 'Экзамены, справки, диктовка — добавьте заявку в корзину, менеджер ответит быстро.' },
+
+  { id: 'robe', title: '🥼 Халаты', items: [
+    { title: 'Халат классический', desc: 'Хлопок 65%, полиэстер 35%, белый.', price: '2 500 ₽',
+      variantsLabel: 'Размер', variants: ['42', '44', '46', '48', '50', '52'] },
+    { title: 'Халат приталенный', desc: 'Стрейч, белый, рукав 3/4.', price: '3 200 ₽',
+      variantsLabel: 'Размер', variants: ['40', '42', '44', '46', '48'] },
+  ] },
+
+  { id: 'teeth', title: '🦷 Зубы пропед / Модели ОЗПТ', items: [
+    { title: 'Зубы пропедевтика', desc: 'Набор для пропедевтики.', variantsLabel: 'Вариант',
+      variants: [{ name: 'Аренда', price: '0 ₽' }, { name: 'Съём', price: '0 ₽' }] },   // TODO цены
+    { title: 'Модель ОЗПТ', desc: 'Модель для ОЗПТ.', variantsLabel: 'Вариант',
+      variants: [{ name: 'Аренда', price: '0 ₽' }, { name: 'Съём', price: '0 ₽' }] },
+  ] },
+
+  { id: 'cover', title: '📘 Обложки', items: [
+    { title: 'Обложка на зачётку', price: '300 ₽' },
+    { title: 'Обложка на студенческий', price: '250 ₽' },
+  ] },
+
+  { id: 'tools', title: '🔧 Стом. инструменты', items: [
+    { title: 'Зеркало стоматологическое', price: '350 ₽', photo: '' },
+    { title: 'Зонд', price: '300 ₽', photo: '' },
+    { title: 'Пинцет', price: '400 ₽', photo: '' },
+  ] },
+
+  { id: 'works', title: '💻 Тесты, курсовые, презентации', items: [
+    { title: 'Тесты', desc: 'Решение онлайн-тестов.', price: 'от 300 ₽' },
+    { title: 'Курсовая', desc: 'Под ключ, с антиплагиатом.', price: 'от 3 000 ₽' },
+    { title: 'Презентация', desc: 'До 15 слайдов.', price: 'от 700 ₽' },
+  ] },
+];
+const MAX_CART = 20; // максимум позиций в корзине
+// =======================================================
+
+const tg = window.Telegram?.WebApp;
+tg?.ready(); tg?.expand();
+
+const app = document.getElementById('app');
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const num = p => /^\s*\d[\d\s]*₽\s*$/.test(p || '') ? +p.replace(/\D/g, '') : null;
+const fmt = n => n.toLocaleString('ru-RU').replace(/ /g, ' ') + ' ₽';
+const vName = v => typeof v === 'string' ? v : v.name;
+
+let state = { view: 'home' };
+let cart = [];  // { sec, item, variant, price, qty }
+try { cart = JSON.parse(localStorage.getItem('cart') || '[]'); } catch (e) {}
+const saveCart = () => { try { localStorage.setItem('cart', JSON.stringify(cart)); } catch (e) {} };
+
+function go(s) { state = s; render(); window.scrollTo(0, 0); }
+function toast(t) {
+  const el = document.getElementById('toast'); el.textContent = t; el.style.display = 'block';
+  clearTimeout(toast.t); toast.t = setTimeout(() => el.style.display = 'none', 1500);
+}
+
+function addToCart(pos) {
+  const same = cart.find(c => c.sec === pos.sec && c.item === pos.item && c.variant === pos.variant);
+  if (same) same.qty++;
+  else if (cart.length >= MAX_CART) { toast('Корзина заполнена'); return; }
+  else cart.push({ ...pos, qty: 1 });
+  saveCart(); tg?.HapticFeedback?.impactOccurred('light'); toast('Добавлено в корзину'); render();
+}
+
+function cartBar() {
+  const bar = document.getElementById('cartbar');
+  const count = cart.reduce((s, c) => s + c.qty, 0);
+  if (!count || state.view === 'cart') { bar.innerHTML = ''; return; }
+  bar.innerHTML = `<button class="main">🛒 Корзина · ${count}</button>`;
+  bar.firstChild.onclick = () => go({ view: 'cart' });
+}
+
+function render() {
+  const sec = CATALOG.find(s => s.id === state.sec);
+
+  if (state.view === 'home') {
+    app.innerHTML = `<h1>RUM store</h1><p class="hint">Выберите раздел</p><div class="list">` +
+      CATALOG.map(s => `<button class="item" data-sec="${s.id}">${esc(s.title)}</button>`).join('') + `</div>`;
+    app.querySelectorAll('[data-sec]').forEach(b => b.onclick = () => go({ view: 'section', sec: b.dataset.sec }));
+
+  } else if (state.view === 'section' && sec.direct) {
+    app.innerHTML = `<button class="back">← Назад</button><h1>${esc(sec.title)}</h1>
+      <p>${esc(sec.text)}</p><button class="main">В корзину</button>`;
+    app.querySelector('.back').onclick = () => go({ view: 'home' });
+    app.querySelector('.main').onclick = () => addToCart({ sec: sec.id, item: 'Консультация', variant: '', price: '' });
+
+  } else if (state.view === 'section') {
+    app.innerHTML = `<button class="back">← Назад</button><h1>${esc(sec.title)}</h1><div class="list">` +
+      sec.items.map((it, i) => `<button class="item" data-i="${i}">${esc(it.title)}<small>${esc(it.price || '')}</small></button>`).join('') + `</div>`;
+    app.querySelector('.back').onclick = () => go({ view: 'home' });
+    app.querySelectorAll('[data-i]').forEach(b => b.onclick = () => go({ view: 'item', sec: sec.id, i: +b.dataset.i, v: null }));
+
+  } else if (state.view === 'item') {
+    const it = sec.items[state.i];
+    const v = it.variants && state.v !== null ? it.variants[state.v] : null;
+    const price = (v && typeof v === 'object' && v.price) || it.price || '';
+    app.innerHTML = `<button class="back">← Назад</button>
+      ${it.photo ? `<img src="${esc(it.photo)}" alt="">` : ''}
+      <h1>${esc(it.title)}</h1>${it.desc ? `<p class="hint">${esc(it.desc)}</p>` : ''}
+      ${it.variants ? `<b>${esc(it.variantsLabel || 'Вариант')}:</b><div class="chips">` +
+        it.variants.map((x, j) => `<button class="chip ${state.v === j ? 'on' : ''}" data-v="${j}">${esc(vName(x))}${typeof x === 'object' && x.price ? ' — ' + esc(x.price) : ''}</button>`).join('') + `</div>` : ''}
+      ${price ? `<div class="price">${esc(price)}</div>` : ''}
+      <button class="main" ${it.variants && state.v === null ? 'disabled' : ''}>${it.variants && state.v === null ? 'Выберите ' + esc((it.variantsLabel || 'вариант').toLowerCase()) : 'В корзину'}</button>`;
+    app.querySelector('.back').onclick = () => go({ view: 'section', sec: sec.id });
+    app.querySelectorAll('[data-v]').forEach(b => b.onclick = () => go({ ...state, v: +b.dataset.v }));
+    app.querySelector('.main').onclick = () => addToCart({
+      sec: sec.id, item: it.title, price,
+      variant: v ? `${it.variantsLabel || 'Вариант'}: ${vName(v)}` : '',
+    });
+
+  } else if (state.view === 'cart') {
+    if (!cart.length) {
+      app.innerHTML = `<button class="back">← В каталог</button><h1>Корзина</h1><p class="hint">Корзина пуста</p>`;
+      app.querySelector('.back').onclick = () => go({ view: 'home' });
+    } else {
+      const sums = cart.map(c => num(c.price));
+      const known = sums.reduce((s, n, k) => s + (n ?? 0) * cart[k].qty, 0);
+      const hasUnknown = sums.some(n => n === null);
+      app.innerHTML = `<button class="back">← В каталог</button><h1>Корзина</h1><div class="list">` +
+        cart.map((c, k) => `<div class="row"><div class="info">${esc(c.item)}
+            <small>${esc([c.variant, c.price].filter(Boolean).join(' · '))}</small></div>
+          <div class="qty"><button data-m="${k}">−</button><b>${c.qty}</b><button data-p="${k}">+</button></div></div>`).join('') +
+        `</div>
+        <div class="total">Итого: ${fmt(known)}${hasUnknown ? ' + позиции с ценой «от»' : ''}</div>
+        <p class="hint">Менеджер подтвердит наличие и итоговую цену.</p>
+        <button class="main" id="checkout">Оформить заказ</button>
+        <button class="ghost" id="clear">Очистить корзину</button>`;
+      app.querySelector('.back').onclick = () => go({ view: 'home' });
+      app.querySelectorAll('[data-p]').forEach(b => b.onclick = () => { cart[+b.dataset.p].qty++; saveCart(); render(); });
+      app.querySelectorAll('[data-m]').forEach(b => b.onclick = () => {
+        const k = +b.dataset.m; if (--cart[k].qty <= 0) cart.splice(k, 1); saveCart(); render();
+      });
+      app.querySelector('#clear').onclick = () => { cart = []; saveCart(); render(); };
+      app.querySelector('#checkout').onclick = checkout;
+    }
+  }
+  cartBar();
+}
+
+function checkout() {
+  if (!tg || tg.platform === 'unknown') { alert('Откройте магазин из бота через кнопку 🛍 Магазин'); return; }
+  // компактный формат, лимит Telegram — 4096 байт
+  const data = JSON.stringify({ v: 2, items: cart.map(c => ({ s: c.sec, t: c.item, o: c.variant, p: c.price, q: c.qty })) });
+  if (new Blob([data]).size > 4000) { alert('Слишком большой заказ, разделите его на два'); return; }
+  cart = []; saveCart();
+  tg.sendData(data); // приложение закроется, заказ придёт в чат бота
+}
+
+render();
+</script>
+</body>
+</html>
