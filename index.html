@@ -271,16 +271,14 @@ const CATALOG = [
   { id: 'tools', icon: '🔧', title: 'Стом. инструменты / Наборы', tag: '22 позиции', subs: [
     { icon: '🔧', title: 'Инструменты', grid: true, items: [
       // photo: 'имя-файла.jpg' — загрузите фото в репозиторий и впишите имя файла
-      { title: 'К-файл', photo: 'k-file.jpg', price: '250 ₽', variantsLabel: 'Размер', variants: ['15', '20', '25', '30', '35', '40'] },
-      { title: 'H-файл', photo: 'h-file.jpg', price: '250 ₽', variantsLabel: 'Размер', variants: ['15', '20', '25', '30', '35', '40'] },
-      { title: 'Ример',  photo: 'reamer.jpg', price: '250 ₽', variantsLabel: 'Размер', variants: ['15', '20', '25', '30', '35', '40'] },
+      { title: 'К-файл (размер 15–40)', photo: 'k-file.jpg', price: '250 ₽', desc: 'В комплекте все размеры от 15 до 40.' },
+      { title: 'H-файл (размер 15–40)', photo: 'h-file.jpg', price: '250 ₽', desc: 'В комплекте все размеры от 15 до 40.' },
+      { title: 'Ример (размер 15–40)', photo: 'reamer.jpg', price: '250 ₽', desc: 'В комплекте все размеры от 15 до 40.' },
       { title: 'Гуттаперча (размер 0.4)', photo: 'guttapercha.jpg', price: '370 ₽' },
       { title: 'Штифты бумажные (размер 0.4)', photo: 'paper-points.jpg', price: '370 ₽' },
-      { title: 'Эндо-блоки', photo: 'endo-blocks.jpg', price: 'от 290 ₽', variantsLabel: 'Вариант', variants: [
-        { name: 'Резец (1 шт)', price: '290 ₽' },
-        { name: 'Премоляр (1 шт)', price: '290 ₽' },
-        { name: 'Моляр (1 шт)', price: '290 ₽' },
-        { name: 'Комплект: резец + премоляр + моляр', price: '750 ₽' },
+      { title: 'Эндо-блоки', photo: 'endo-blocks.jpg', price: 'от 290 ₽', desc: 'Резец, премоляр и моляр.', variantsLabel: 'Количество', variants: [
+        { name: 'Комплект 3 шт (резец, премоляр, моляр)', price: '750 ₽' },
+        { name: '1 шт', price: '290 ₽' },
       ] },
       { title: 'Фантом Китай', photo: 'fantom-china.jpg', price: '2 450 ₽' },
       { title: 'Фантом Турция', photo: 'fantom-turkey.jpg', price: '4 370 ₽' },
