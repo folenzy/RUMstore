@@ -104,6 +104,16 @@
   .hero-ph { aspect-ratio: 1; border-radius: 26px; margin-bottom: 18px; overflow: hidden; display: grid; place-items: center;
              font-size: 64px; background: linear-gradient(160deg, #e3ecf7, #f7f9fc); border: 1px solid var(--border); }
   .hero-ph img { width: 100%; height: 100%; object-fit: cover; }
+  .gal-wrap { position: relative; margin-bottom: 18px; }
+  .gal { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; border-radius: 26px; border: 1px solid var(--border);
+         scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .gal::-webkit-scrollbar { display: none; }
+  .gal .slide { flex: 0 0 100%; aspect-ratio: 1; scroll-snap-align: center; display: grid; place-items: center; font-size: 64px;
+                background: linear-gradient(160deg, #e3ecf7, #f7f9fc); }
+  .gal .slide img { width: 100%; height: 100%; object-fit: cover; }
+  .dots { position: absolute; left: 0; right: 0; bottom: 12px; display: flex; justify-content: center; gap: 6px; pointer-events: none; }
+  .dots i { width: 7px; height: 7px; border-radius: 99px; background: rgba(20,48,79,.28); transition: width 200ms var(--ease-out), background-color 200ms ease; }
+  .dots i.on { width: 20px; background: var(--accent-1); }
   .ttl { font-size: 24px; font-weight: 800; letter-spacing: -.02em; margin: 0 0 6px; line-height: 1.15; }
   .big { font-size: 30px; font-weight: 800; letter-spacing: -.02em; margin: 10px 0 4px;
          background: var(--accent); -webkit-background-clip: text; background-clip: text; color: transparent; }
@@ -373,7 +383,47 @@ function cartTotal() {
   return { sum, unknown };
 }
 
-function imgFail(img) { img.replaceWith(document.createTextNode(img.dataset.f || '📷')); }
+// Фото товара. Достаточно загрузить файлы на GitHub:
+//   photo: 'k-file.jpg'  → главное фото; если рядом лежат k-file-2.jpg, k-file-3.jpg … — появится листаемая галерея
+//   photos: ['a.jpg', 'b.jpg'] → можно задать список вручную
+function galleryHtml(list, icon, anim) {
+  const img = src => `<img src="${esc(src)}" alt="" data-f="${icon}" onerror="imgFail(this)">`;
+  return `<div class="gal-wrap ${anim ? 'st' : ''}"><div class="gal" id="gal">${list.map(src => `<div class="slide">${img(src)}</div>`).join('')}</div>
+    <div class="dots">${list.map((_, k) => `<i class="${k ? '' : 'on'}"></i>`).join('')}</div></div>`;
+}
+function media(it, icon) {
+  const list = it.photos && it.photos.length ? it.photos : (it.photo ? [it.photo] : []);
+  if (!list.length) return `<div class="hero-ph st">${icon}</div>`;
+  if (list.length > 1) return galleryHtml(list, icon, true);
+  const img = `<img src="${esc(list[0])}" alt="" data-f="${icon}" onerror="imgFail(this)">`;
+  return `<div class="hero-ph st" data-probe="${esc(list[0])}" data-f="${icon}">${img}</div>`;
+}
+// ищем дополнительные фото name-2.jpg, name-3.jpg… и, если есть, превращаем фото в галерею
+function probeMore(el) {
+  const src = el.dataset.probe, m = src.match(/^(.*)\.(\w+)$/);
+  if (!m) return;
+  const found = [src]; let n = 2;
+  const done = () => {
+    if (found.length < 2 || !el.isConnected) return;
+    el.outerHTML = galleryHtml(found, el.dataset.f, false);
+    attachGal();
+  };
+  const next = () => {
+    if (n > 8) return done();
+    const im = new Image(), u = `${m[1]}-${n}.${m[2]}`;
+    im.onload = () => { found.push(u); n++; next(); };
+    im.onerror = done;
+    im.src = u;
+  };
+  next();
+}
+function attachGal() {
+  const gal = document.querySelector('#gal');
+  if (gal) gal.onscroll = () => {
+    const k = Math.round(gal.scrollLeft / gal.clientWidth);
+    gal.parentElement.querySelectorAll('.dots i').forEach((d, j) => d.classList.toggle('on', j === k));
+  };
+}function imgFail(img) { img.replaceWith(document.createTextNode(img.dataset.f || '📷')); }
 function go(s, keepScroll) { state = s; render(); if (!keepScroll) window.scrollTo(0, 0); }
 
 function toast(t) {
@@ -486,7 +536,7 @@ function render(keepAnim) {
     const price = (v && typeof v === 'object' && v.price) || it.price || '';
     const need = it.variants && state.v == null;
     html = header('') +
-      `<div class="hero-ph st">${it.photo ? `<img src="${esc(it.photo)}" alt="" data-f="${box.grid ? '🦷' : sec.icon}" onerror="imgFail(this)">` : (box.grid ? '🦷' : sec.icon)}</div>
+      `${media(it, box.grid ? '🦷' : sec.icon)}
        <h1 class="ttl st" style="--i:1">${esc(it.title)}</h1>
        ${price ? `<div class="big st" style="--i:2">${esc(price)}</div>` : `<p class="desc st" style="--i:2">Цена уточняется у менеджера</p>`}
        ${it.desc ? `<p class="desc st" style="--i:3">${esc(it.desc)}</p>` : ''}
@@ -509,7 +559,7 @@ function render(keepAnim) {
 
 function productView(box) {
   const p = box.product;
-  return `<div class="hero-ph st">${p.photo ? `<img src="${esc(p.photo)}" alt="" data-f="${box.icon}" onerror="imgFail(this)">` : box.icon}</div>
+  return `${media(p, box.icon)}
     <span class="pill st" style="--i:1">✨ Скоро в продаже</span>
     <h1 class="ttl st" style="--i:1">${esc(p.name)}</h1>
     <p class="desc st" style="--i:2">${esc(p.lead)}</p>
@@ -526,7 +576,7 @@ function tieredView(sec, it) {
   const t = tierOf(n);
   const unit = t >= 0 ? it.tiered[mats[m]][t] : null;
   const html = header('') +
-    `<div class="hero-ph st">${it.photo ? `<img src="${esc(it.photo)}" alt="" data-f="📘" onerror="imgFail(this)">` : '📘'}</div>
+    `${media(it, '📘')}
      <h1 class="ttl st" style="--i:1">${esc(it.title)}</h1>
      <p class="desc st" style="--i:2">Чем больше тираж — тем ниже цена за штуку.</p>
      <div class="label">Материал</div>
@@ -584,6 +634,8 @@ function bind(sec, box) {
     const next = Math.min(TIERS[TIERS.length - 1][1], Math.max(TIERS[0][0], cur + +b.dataset.n));
     haptic('light'); go({ ...state, n: next }, true);
   });
+  attachGal();
+  app.querySelectorAll('[data-probe]').forEach(probeMore);
   const q = app.querySelector('#qty');
   if (q) q.onchange = () => go({ ...state, n: Math.max(1, Math.round(+q.value || 0)) }, true);
   on('[data-p]', b => { cart[+b.dataset.p].qty++; saveCart(); haptic('light'); render(true); });
