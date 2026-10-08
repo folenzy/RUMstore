@@ -210,6 +210,45 @@
     .view, .st, .bump, .soon .e { animation: none; opacity: 1; }
     .dock, .toast { transition: opacity 200ms ease; }
   }
+  /* ===== тема: насыщенный синий фон + белые карточки ===== */
+  :root { --bg: #1f42ad; --navy: #142f86; --icon: #1f3fa6; --on-bg-muted: rgba(255,255,255,.78); }
+  html { background: #1f42ad; }
+  body { background: linear-gradient(180deg, #2549bb 0%, #1c3a9c 100%) fixed; color: #fff; }
+  body::before { background: radial-gradient(closest-side, rgba(255,255,255,.14), transparent); }
+  .tile, .row, .card, .citem, .sum, .panel, .feat, .specs, .chip, .tier, .ghost, .qty-box input { color: var(--text); }
+  .tile, .row, .card, .citem, .sum, .panel, .feat, .specs { border: 0; box-shadow: 0 12px 26px -16px rgba(4, 16, 64, .65); }
+  .tile { border-radius: 22px; padding: 16px; }
+  .tile b { font-size: 16px; font-weight: 800; color: #0f1f4d; }
+  .tile.dim { opacity: 1; }
+  .tile.wide { background: #fff; padding: 18px; gap: 16px; }
+  .tile .ico { width: auto; height: auto; background: none; box-shadow: none; border-radius: 0; color: var(--icon); justify-content: start; }
+  .tile .ico svg { width: 46px; height: 46px; display: block; }
+  .tile.wide .ico svg { width: 56px; height: 56px; }
+  .tile.wide b { font-size: 19px; }
+  .badge { background: var(--icon); color: #fff; top: 10px; right: 10px; }
+  .hello { margin: 6px 4px 18px; }
+  .hello h1 { margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -.02em; line-height: 1.15; }
+  .hello p { margin: 4px 0 0; color: var(--on-bg-muted); font-size: 14px; }
+  .top h2 { color: #fff; }
+  .back { background: rgba(255,255,255,.16); color: #fff; }
+  .lead, .desc, .label, .note, .empty, .total span { color: var(--on-bg-muted); }
+  .big { background: none; -webkit-background-clip: border-box; background-clip: border-box; color: #fff; }
+  .pill { background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.35); color: #fff; }
+  .link { color: #fff; text-decoration: underline; }
+  .chip.on, .tier.on { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .chip.on span, .tier.on small { color: rgba(255,255,255,.8); }
+  .step { background: rgba(255,255,255,.16); color: #fff; }
+  .card .add { background: #e8eef9; color: var(--navy); }
+  .card .add.go { background: var(--icon); color: #fff; }
+  .hero-ph, .gal { border: 0; }
+  .dock { background: linear-gradient(to top, #1c3a9c 55%, transparent); }
+  .cta { background: var(--navy); color: #fff; box-shadow: 0 14px 30px -14px rgba(0, 8, 40, .8); }
+  .cta:disabled { background: rgba(255,255,255,.18); color: rgba(255,255,255,.7); box-shadow: none; }
+  .cta .cart-ic { position: relative; display: inline-flex; }
+  .cta .cart-ic svg { width: 30px; height: 30px; }
+  .cta .cart-ic .cnt { position: absolute; top: -6px; right: -10px; background: #fff; color: var(--navy); font-size: 11px; padding: 1px 6px; }
+  .cta.cartbar { justify-content: flex-start; gap: 0; padding: 0 22px; }
+  .cta.cartbar .lbl { flex: 1; text-align: center; font-size: 17px; margin-right: 30px; }
 </style>
 </head>
 <body>
@@ -235,7 +274,7 @@
 const TIERS = [[41, 200], [201, 500], [501, 1000]];
 
 const CATALOG = [
-  { id: 'help', icon: '🎓', title: 'Помощь с любым предметом', wide: true, direct: true,
+  { id: 'help', icon: '🎓', title: 'Помощь с любым предметом', tileTitle: 'Помощь', tag: 'с любым предметом', wide: true, direct: true,
     request: 'Помощь с предметом / экзамен',
     text: 'Поможем справиться с учебными задачами по любой дисциплине.\n\n' +
           'Как это работает:\n' +
@@ -297,9 +336,20 @@ const CATALOG = [
       { title: 'Другое', desc: 'Любая электронная работа, презентация или помощь, которой нет в списке. Добавьте заявку в корзину — менеджер напишет вам и всё уточнит.' },
     ] },
 
-  { id: 'packs', icon: '📦', title: 'Пакеты услуг', tag: 'Выгодно', soon: true,
+  { id: 'packs', icon: '📦', title: 'Пакеты услуг', tag: 'Выгодно', wide: true, soon: true,
     text: 'Скоро здесь появятся выгодные пакеты услуг 🔥\n\nСледите за обновлениями!' },
 ];
+// Иконки плиток на главной (линейные, в стиле макета)
+const svg = d => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+const ICONS = {
+  help:  svg('<path d="M2 9l10-5 10 5-10 5z" fill="currentColor"/><path d="M6 11.2V16c0 1.6 2.7 3 6 3s6-1.4 6-3v-4.8"/><path d="M22 9v5.5"/>'),
+  robe:  svg('<path d="M8.5 3L12 6.5 15.5 3 20 5.5l-1.8 5.2H16V21H8V10.7H5.8L4 5.5z"/><path d="M12 6.5V21"/><path d="M14 14h1.2"/>'),
+  teeth: svg('<path d="M7.2 3C4.8 3 3.3 4.9 3.3 7.4c0 2.9 1.5 4.3 2 6.8.6 3 1 6.8 3 6.8 2 0 1.9-4.6 3.7-4.6s1.7 4.6 3.7 4.6 2.4-3.8 3-6.8c.5-2.5 2-3.9 2-6.8C20.7 4.9 19.2 3 16.8 3c-2 0-2.9 1.2-4.8 1.2S9.2 3 7.2 3z"/>'),
+  cover: svg('<path d="M5 4.5A1.5 1.5 0 016.5 3H19v15H6.5A1.5 1.5 0 005 19.5z" fill="currentColor"/><path d="M5 19.5A1.5 1.5 0 006.5 21H19v-3"/><path d="M12 7.5v6M9 10.5h6" stroke="#fff" stroke-width="2"/>'),
+  works: svg('<rect x="3.5" y="4" width="17" height="11.5" rx="1.5"/><path d="M1.5 19.5h21"/><path d="M7 8l1 1 2-2M12.5 8h4.5M7 12l1 1 2-2M12.5 12h4.5"/>'),
+  packs: svg('<path d="M3 7.5L12 3l9 4.5L12 12z" fill="currentColor"/><path d="M3 7.5v9L12 21l9-4.5v-9"/><path d="M12 12v9"/>'),
+  cart:  svg('<circle cx="9" cy="20" r="1.4" fill="currentColor"/><circle cx="17.5" cy="20" r="1.4" fill="currentColor"/><path d="M2 3.5h2.8L7.4 15h11.3l2.3-8H5.9"/>'),
+};
 const MAX_CART = 20;  // максимум позиций в корзине
 // =========================================================================
 
@@ -307,7 +357,7 @@ const tg = window.Telegram?.WebApp;
 const inTg = !!(tg && tg.platform && tg.platform !== 'unknown');
 if (tg) {
   tg.ready(); tg.expand();
-  try { tg.setHeaderColor('#f6f6f3'); tg.setBackgroundColor('#f6f6f3'); } catch (e) {}
+  try { tg.setHeaderColor('#2549bb'); tg.setBackgroundColor('#1c3a9c'); } catch (e) {}
 }
 
 const app = document.getElementById('app');
@@ -409,7 +459,7 @@ function cartDock() {
   const n = cartCount();
   if (!n) return setDock('');
   const { sum, unknown } = cartTotal();
-  setDock(`<button class="cta split press"><span>🛒 Корзина <span class="cnt">${n}</span></span><span>${sum ? fmt(sum) + (unknown ? '+' : '') : ''}</span></button>`,
+  setDock(`<button class="cta cartbar press"><span class="cart-ic">${ICONS.cart}<span class="cnt">${n}</span></span><span class="lbl">Корзина${sum ? ': ' + fmt(sum) + (unknown ? '+' : '') : ''}</span></button>`,
           () => go({ view: 'cart' }));
 }
 
@@ -423,20 +473,16 @@ function render(keepAnim) {
 
   if (state.view === 'home') {
     const name = tg?.initDataUnsafe?.user?.first_name;
-    html = `<div class="hero st">
-        <div class="brand">RUM store</div>
-        <h1>${name ? 'Привет, ' + esc(name) + '!' : 'Всё для учёбы'}<br>в одном месте</h1>
-        <p>Выберите раздел, соберите корзину — менеджер свяжется с вами</p>
-      </div><div class="tiles">` +
+    html = `<div class="hello st"><h1>${name ? 'Привет, ' + esc(name) + ' 👋' : 'RUM store'}</h1><p>Что нужно сегодня?</p></div><div class="tiles">` +
       CATALOG.map((s, k) => `<button class="tile press st ${s.wide ? 'wide' : ''} ${s.soon ? 'dim' : ''}" style="--i:${k + 1}" data-sec="${s.id}">
-          <div class="ico">${s.icon}</div>
-          <div><b>${esc(s.title)}</b>${s.wide && s.tag ? `<small>${esc(s.tag)}</small>` : ''}</div>
+          <div class="ico">${ICONS[s.id] || s.icon}</div>
+          <div><b>${esc(s.tileTitle || s.title)}</b>${s.wide && s.tag ? `<small>${esc(s.tag)}</small>` : ''}</div>
           ${s.wide ? '<span class="chev">›</span>' : `<small>${esc(s.tag || '')}</small>`}
           ${s.soon ? '<span class="badge">Скоро</span>' : ''}
         </button>`).join('') + `</div>`;
 
   } else if (state.view === 'section' && (box.direct || box.soon)) {
-    html = header(`${box.icon} ${box.title}`) + (box.product ? productView(box)
+    html = header(box.title) + (box.product ? productView(box)
       : box.soon
       ? `<div class="panel soon st"><div class="e">${box.icon}</div>${esc(box.text)}</div>`
       : `<div class="panel st">${esc(box.text)}</div>`);
@@ -447,14 +493,14 @@ function render(keepAnim) {
     }
 
   } else if (state.view === 'section' && box.subs) {
-    html = header(`${box.icon} ${box.title}`) + `<div class="list">` +
+    html = header(box.title) + `<div class="list">` +
       box.subs.map((x, k) => `<button class="row press st" style="--i:${k}" data-sub="${k}">
           <div class="ico">${x.icon}</div>
           <div class="t"><b>${esc(x.title)}</b><small>${x.soon ? 'Скоро' : (x.count || x.items.length + ' позиций')}</small></div>
           <span class="chev">›</span></button>`).join('') + `</div>`;
 
   } else if (state.view === 'section') {
-    html = header(`${box.icon} ${box.title}`) + (box.text ? `<p class="lead">${esc(box.text)}</p>` : '');
+    html = header(box.title) + (box.text ? `<p class="lead">${esc(box.text)}</p>` : '');
     if (box.grid) {
       html += `<div class="grid">` + box.items.map((it, i) => `<div class="card st" style="--i:${Math.min(i, 10)}">
           <button class="press" data-i="${i}" style="text-align:left">
